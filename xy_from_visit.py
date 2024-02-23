@@ -116,11 +116,18 @@ class GrabXYCoords:
         Invoke which_visit() to assign a particular visit to every RA, Dec
 
         TO DO: loop over bandpasses!
-        could rename visits as: bandpass_visit = [i + '_f150w' for i in visits]
+        could rename visits as: bandpass_visit = [i + '_f277w' for i in visits]
         """
         ras = self.ras
         decs = self.decs
-
+        
+        # This is hard-coded in for now, but could add a function to assign 
+        # coord file based on bandpass we are working on 
+        coords_file = os.path.join(
+            self.config['coord_files']['path'], 
+            self.config['coord_files']['names'][1]
+        )
+        
         return which_visit(coords_file, ras, decs)
 
     def get_pixcoord_from_visit(self):
@@ -173,7 +180,7 @@ class GrabXYCoords:
         self.create_output_catalog(visits)
 
         # Save to file as a pseudocheckpoint
-        self.save_catalog(outname="test_xy_checkpoint.fits")
+        self.save_catalog()
 
         # Loop over visit visits, select matching gals, get X, Y
         self.get_pixcoord_from_visit()
