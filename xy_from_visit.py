@@ -36,7 +36,7 @@ class GrabXYCoords:
     def grab_coords(self, imcat, config):
         """
         Load in coordinates from catalog, return coord tuple. This is in here
-        just in case it becomes useful later
+        just in case it becomes useful later.
         Inputs
             imcat: FITS instance of catalog
             config: main run configuration dict
@@ -56,8 +56,8 @@ class GrabXYCoords:
     def convert_wcs2pix(self, imfile, ras, decs):
         """
         Use JWST ImageModel to convert the RA, Dec of galaxies that lie in the
-        footprint of the given single-visit mosaic, to pixel X, Y. Function assumes
-        that
+        footprint of the given single-visit mosaic, to pixel X, Y. Thanks to Anton 
+        Koekemoer (@antonkoekemoer) for help here. 
 
         Inputs
             imfile: image file to use for WCS
