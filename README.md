@@ -5,6 +5,13 @@ Code to go from master catalog RA, Dec to catalog with  X/Y on a particular mosa
 
 Figure description: DS9 image showing a sample of objects from Marko Shuntov's (@mShuntov) Tile B9 catalog that overlap the resampled visit 64 image created by Max Franco.
 
+# To run:
+```
+python grab_XY_from_visit_runner.py -config xy_from_visit_config.yaml
+```
+
+Dependencies: `numpy`, `astropy`, `scipy`, `jwst`, `matplotlib`
+
 # To-do
 
 - Incorporate iteration over bandpasses for matching to different coordinate files
