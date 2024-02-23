@@ -1,7 +1,7 @@
 # xy-from-visit
 Code to go from master catalog RA, Dec to catalog with  X/Y on a particular mosaic. Makes use of convex hull dcode kindly provided by Max Franco.
 
-![more_overlap_tileB9visit64](https://github.com/mcclearyj/xy-from-visit/assets/14120046/5fc081f9-a7e2-4b90-a0c4-458f0af5ef3b)
+![more_overlap_tileB9visit64](https://github.com/mcclearyj/xy-from-visit/assets/14120046/42cb0b25-ed88-4cba-88af-29d1b7d9ba71)
 
 Figure description: DS9 image showing a sample of objects from Marko Shuntov's (@mShuntov) Tile B9 catalog that overlap the resampled visit 64 image created by Max Franco.
 
