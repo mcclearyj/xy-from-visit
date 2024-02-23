@@ -1,5 +1,5 @@
 # xy-from-visit
-Code to go from master catalog RA, Dec to catalog with  X/Y on a particular mosaic. Makes use of convex hull dcode kindly provided by Max Franco.
+Code to go from master catalog RA, Dec to catalog with  X/Y on a particular mosaic. Makes use of convex hull dcode kindly provided by Max Franco and WCS -> xy code provided by @antonkoekemoer 
 
 ![more_overlap_tileB9visit64](https://github.com/mcclearyj/xy-from-visit/assets/14120046/42cb0b25-ed88-4cba-88af-29d1b7d9ba71)
 
