@@ -1,40 +1,44 @@
 ##
 ## xy_from_visit_config.yaml
 ##
-#catalog_path = '/Users/j.mccleary/Research/jwst_cosmos/real_data/catalogs/'
+#catalog_path = ''
 #catalog_name = 'COSMOSWeb_master_v1.6.0-sersic+BD-em_cgs_LePhare_nodupl.fits'
 #catalog = fits.open(os.path.join(catalog_path, catalog_name))
 
 # This is the master catalog you are converting, local path & name
 input_catalog:
   # catalog_path: /path/to/your/cat
-  path: '/n17data/shuntov/PSFEx_work/Catalogs-JWST/v3.0/'
+  path: '/Users/j.mccleary/Research/jwst_cosmos/real_data/catalogs/'
   # catalog name: master_cat.fits
-  name: 'COSMOS-Web-PSFEx-SE-Cat_f277w_B9.fits'
+  name: 'COSMOSWeb_master_v2.0.0-sersic-cgs.fits'
   # RA column name in catalog
-  ra_colname: 'ALPHA_J2000'
+  ra_colname: 'RA_MODEL'
   # Dec column name in catalog
-  dec_colname: 'DELTA_J2000'
+  dec_colname: 'DEC_MODEL'
   # Which HDU has info? HDU=2 for ldac, usually 1 otherwise
-  hdu: 2
+  hdu: 1
 
 # Path to resampled mosaics
-visit_mosaic_path: '/n23data2/mfranco/jwst/COSMOS-Web_jan_2024/products/pipeline_level3_better_stripping_jhat/f150w/'
-#visit_64_f150w_COSMOS-Web_from_crf_20mas_i2d.fits/Users/j.mccleary/Research/jwst_cosmos/real_data/Jan2024/20mas_resamp'
+#visit_mosaic_path: '/n23data2/mfranco/jwst/COSMOS-Web_jan_2024/products/pipeline_level3_better_stripping_jhat/f150w/'
+visit_mosaic_path: '/Users/j.mccleary/Research/jwst_cosmos/real_data/Jan2024/20mas_resamp'
 
 # Parameters for Max Franco-format visit name lists
 coord_files:
   # Path to visit name lists
-  path: '/n23data1/mccleary/cweb_psf'
+  path: './'
   # Names of visit name lists; hopefully, names include bandpass!
   names: ['coords_f115w_CW_JAN2024.txt', 'coords_f150w_CW_JAN2024.txt', 'coords_f277w_CW_JAN2024.txt', 'coords_f444w_CW_JAN2024.txt']
 
 # Bandpasses to use: any of f115w, f150w, f277w, f444w
-bandpasses: 'f277w'
+bandpasses: 'f150w'
 
 # Output catalog name
 output_catalog:
   # Desired output path
-  path: '/n23data1/mccleary/cweb_psf'
+  path: './'
   # Desired output name
   name: 'test_xy.fits'
+  # List of columns from original master cat to save
+  extra_cols: ['id', 'AREA', 'RADIUS', 'RADIUS_err',
+  'AXRATIO', 'AXRATIO_err', 'E1', 'E1_err', 'E2', 'E2_err', 'TILE',
+  'FLAG_STAR_JWST', 'source_id', 'FLAG_STAR_HSC']

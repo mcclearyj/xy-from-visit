@@ -29,6 +29,7 @@ class GrabXYCoords:
         self.imcat = catalog[config['input_catalog']['hdu']].data
         self.ras = self.imcat[config['input_catalog']['ra_colname']]
         self.decs = self.imcat[config['input_catalog']['dec_colname']]
+        self.visit_cat = {} # will hold
         self.visit_mosaics = visit_mosaics
         self.config = config
         self.output_cat = None
@@ -56,8 +57,8 @@ class GrabXYCoords:
     def convert_wcs2pix(self, imfile, ras, decs):
         """
         Use JWST ImageModel to convert the RA, Dec of galaxies that lie in the
-        footprint of the given single-visit mosaic, to pixel X, Y. Thanks to Anton 
-        Koekemoer (@antonkoekemoer) for help here. 
+        footprint of the given single-visit mosaic, to pixel X, Y. Thanks to Anton
+        Koekemoer (@antonkoekemoer) for help here.
 
         Inputs
             imfile: image file to use for WCS
@@ -83,31 +84,23 @@ class GrabXYCoords:
         imcat = self.imcat
         ras = self.ras
         decs = self.decs
-        number = self.imcat['NUMBER']
         visits = np.array(visits, dtype=int)
+        mcat_cols = self.config['output_catalog']['extra_cols']
 
         # These two will hold the pixel X, Y
         dummy_x = np.ones(len(imcat))
         dummy_y = np.ones(len(imcat))
 
+        # Create Table instance and populate with columns from master cat
         tab = Table()
+        for col in mcat_cols:
+            tab.add_column(imcat[col], name=str(col))
+
+        # Add columns that will represent the value added columns
         tab.add_columns(
-            [number, visits, ras, decs, dummy_x, dummy_y],
-            names=['number', 'visit_num', 'ra', 'dec', 'visit_X', 'visit_Y']
+            [visits, ras, decs, dummy_x, dummy_y],
+            names=['visit_num', 'ra', 'dec', 'visit_X', 'visit_Y']
         )
-        '''
-        # Add these back in when I have real catalog
-        tab.add_columns([
-            imcat['Id'],
-            imcat['RA_DETEC'], imcat['DEC_DETEC'],
-            imcat['RA_MODEL'], imcat['DEC_MODEL'],
-            imcat['AREA'], imcat['RADIUS'], imcat['RADIUS_err'],
-            imcat['AXRATIO'], imcat['AXRATIO_err'],
-            imcat['E1'], imcat['E1_err'],
-            imcat['E2'], imcat['E2_err']
-            ]
-        )
-        '''
 
         self.output_cat = tab
 
@@ -120,14 +113,14 @@ class GrabXYCoords:
         """
         ras = self.ras
         decs = self.decs
-        
-        # This is hard-coded in for now, but could add a function to assign 
-        # coord file based on bandpass we are working on 
+
+        # This is hard-coded in for now, but could add a function to assign
+        # coord file based on bandpass we are working on
         coords_file = os.path.join(
-            self.config['coord_files']['path'], 
+            self.config['coord_files']['path'],
             self.config['coord_files']['names'][1]
         )
-        
+
         return which_visit(coords_file, ras, decs)
 
     def get_pixcoord_from_visit(self):
@@ -179,7 +172,7 @@ class GrabXYCoords:
         # Create dummy output catalog
         self.create_output_catalog(visits)
 
-        # Save to file as a pseudocheckpoint
+        # Save to file as a pseudocheckpoint -- at least save visit numbers!
         self.save_catalog()
 
         # Loop over visit visits, select matching gals, get X, Y

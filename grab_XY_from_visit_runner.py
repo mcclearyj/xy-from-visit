@@ -39,11 +39,8 @@ def parse_args():
 
     parser = ArgumentParser()
 
-    parser.add_argument('-config', default=None,
+    parser.add_argument('-config', '-c', default=None,
                         help = 'Configuration file for this script')
-    parser.add_argument('--vb', action='store_true', default=True,
-                        help = 'Print detailed messages [does nothing for now]')
-
     return parser.parse_args()
 
 def main(args):
@@ -51,7 +48,7 @@ def main(args):
     # Load config
     config = read_yaml(args.config)
 
-    # Access master catalog and read in
+    # Access master catalog and read it in
     master_cat = os.path.join(
         config['input_catalog']['path'], config['input_catalog']['name']
     )
@@ -60,13 +57,20 @@ def main(args):
     except FileNotFoundError as fnf:
         print("No catalog found\n", fnf)
 
+    # Courtesy sanity check for requested output columns
+    cols2save = config['output_catalog']['extra_cols']
+    mcat_cols = catalog[config['input_catalog']['hdu']].header.values()
+    for col in cols2save:
+        if col not in mcat_cols:
+            raise KeyError(f"Requested column {col} not in catalog, exiting...")
+
     # Locate single-visit mosaics
     visit_mosaic_path = config['visit_mosaic_path']
     visit_mosaics = glob.glob(
         os.path.join(visit_mosaic_path, 'visit*crf_20mas_i2d.fits')
     )
 
-    # A little sanity check
+    # Little sanity check #2: exit if no mosaics found!
     if len(visit_mosaics) == 0:
         raise FileNotFoundError(
             f"Warning: No mosaics found in {visit_mosaic_path}, exiting...\n"
