@@ -16,6 +16,5 @@ Dependencies: `numpy`, `astropy`, `scipy`, `jwst`, `matplotlib`
 
 - Incorporate iteration over bandpasses for matching to different coordinate files
 - Include bandpass in `visit_num` column of output catalog
-- Fix hard-coded output catalog columns, or at least match convention of input master reference catalog to be used!
 
 Longer term: find a cleverer way to sort through the different coordinate files, so that [we are not looping over thousands of entries]([url](https://github.com/mcclearyj/xy-from-visit/blob/5dbc3c943b2cd5e369893c4e3b1b3cf119649c7e/max_polygons.py#L90)https://github.com/mcclearyj/xy-from-visit/blob/5dbc3c943b2cd5e369893c4e3b1b3cf119649c7e/max_polygons.py#L90) for many hundreds of thousands of galaxies in four bandpasses. I added a break statement to at least stop looping once a match has been found, and also implemented `map()`, but this problem seems ripe for parallelization, at least (maybe `starmap()`?)

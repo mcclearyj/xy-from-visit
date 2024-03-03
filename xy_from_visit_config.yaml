@@ -1,14 +1,11 @@
 ##
 ## xy_from_visit_config.yaml
 ##
-#catalog_path = ''
-#catalog_name = 'COSMOSWeb_master_v1.6.0-sersic+BD-em_cgs_LePhare_nodupl.fits'
-#catalog = fits.open(os.path.join(catalog_path, catalog_name))
 
 # This is the master catalog you are converting, local path & name
 input_catalog:
   # catalog_path: /path/to/your/cat
-  path: '/Users/j.mccleary/Research/jwst_cosmos/real_data/catalogs/'
+  path: './'
   # catalog name: master_cat.fits
   name: 'COSMOSWeb_master_v2.0.0-sersic-cgs.fits'
   # RA column name in catalog
@@ -19,8 +16,7 @@ input_catalog:
   hdu: 1
 
 # Path to resampled mosaics
-#visit_mosaic_path: '/n23data2/mfranco/jwst/COSMOS-Web_jan_2024/products/pipeline_level3_better_stripping_jhat/f150w/'
-visit_mosaic_path: '/Users/j.mccleary/Research/jwst_cosmos/real_data/Jan2024/20mas_resamp'
+visit_mosaic_path: '/n23data2/mfranco/jwst/COSMOS-Web_jan_2024/products/pipeline_level3_better_stripping_jhat/f150w/'
 
 # Parameters for Max Franco-format visit name lists
 coord_files:
@@ -29,8 +25,8 @@ coord_files:
   # Names of visit name lists; hopefully, names include bandpass!
   names: ['coords_f115w_CW_JAN2024.txt', 'coords_f150w_CW_JAN2024.txt', 'coords_f277w_CW_JAN2024.txt', 'coords_f444w_CW_JAN2024.txt']
 
-# Bandpasses to use: any of f115w, f150w, f277w, f444w
-bandpasses: 'f150w'
+# Bandpass to use: any of f115w, f150w, f277w, f444w
+bandpass: 'f150w'
 
 # Output catalog name
 output_catalog:

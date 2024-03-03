@@ -104,9 +104,36 @@ class GrabXYCoords:
 
         self.output_cat = tab
 
-    def assign_visit_number(self, coords_file='coords_f150w_CW_JAN2024.txt'):
+    def grab_matching_coordsfile(self, bandpass=None):
+        """
+        Little utility function to grab matching visit/footprint file (aka
+        coordsfile or coords_file) for a given bandpass
+        """
+        # In case we ever want to supply an argument
+        if bandpass == None:
+            bandpass = self.config['bandpass']
+
+        # Array of names for indexing
+        coords_files = np.array(self.config['coord_files']['names'])
+
+        # Identify coordsfile for bandpass name using regexps and list comprehension <3
+        wg = [
+            bandpass.lower() ==
+            re.search(r"[f,F](\d){3}[w,W]", cfile).group().lower()
+            for cfile in coords_files
+        ]
+
+        # Return the first matching coords_file
+        return coords_files[wg][0]
+
+    def assign_visit_number(self, this_coords_file):
         """
         Invoke which_visit() to assign a particular visit to every RA, Dec
+
+        Input
+            coords_file: contains footprint of every visit in this bandpass
+        Returns
+            visit numbers
 
         TO DO: loop over bandpasses!
         could rename visits as: bandpass_visit = [i + '_f277w' for i in visits]
@@ -114,11 +141,8 @@ class GrabXYCoords:
         ras = self.ras
         decs = self.decs
 
-        # This is hard-coded in for now, but could add a function to assign
-        # coord file based on bandpass we are working on
         coords_file = os.path.join(
-            self.config['coord_files']['path'],
-            self.config['coord_files']['names'][1]
+            self.config['coord_files']['path'], this_coords_file
         )
 
         return which_visit(coords_file, ras, decs)
@@ -129,7 +153,6 @@ class GrabXYCoords:
         Saving this snippet in case I need it
         #unique_visits = [int(i) for i in np.unique(output_cat['visit_num'])]
         """
-
         # For convenience
         output_cat = self.output_cat
         # Loop over visits, reading in image WCS one at a time
@@ -166,13 +189,16 @@ class GrabXYCoords:
     def run(self):
         """ Perform all functions """
 
+        # Pick out matching coordsfile from bandpass
+        this_coords_file = self.grab_matching_coordsfile()
+
         # Get corresponding visit numbers for every catalog entry
-        visits = self.assign_visit_number()
+        visits = self.assign_visit_number(this_coords_file)
 
         # Create dummy output catalog
         self.create_output_catalog(visits)
 
-        # Save to file as a pseudocheckpoint -- at least save visit numbers!
+        # Save to file as a pseudocheckpoint to at least save visit numbers
         self.save_catalog()
 
         # Loop over visit visits, select matching gals, get X, Y
