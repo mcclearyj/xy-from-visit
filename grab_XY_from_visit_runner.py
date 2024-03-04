@@ -48,6 +48,12 @@ def main(args):
     # Load config
     config = read_yaml(args.config)
 
+    # Create output directory, if it doesn't exist
+    if os.path.isdir(config['output_catalog']['path']) == False:
+        cmd = f"mkdir -p {config['output_catalog']['path']}"
+        os.system(cmd)
+    else:
+        print(f"output directory {config['output_catalog']['path']} exists, continuing...")
     # Access master catalog and read it in
     master_cat = os.path.join(
         config['input_catalog']['path'], config['input_catalog']['name']
@@ -65,10 +71,10 @@ def main(args):
             raise KeyError(f"Requested column {col} not in catalog, exiting...")
 
     # Locate single-visit mosaics
-    visit_mosaic_path = config['visit_mosaic_path']
-    visit_mosaics = glob.glob(
-        os.path.join(visit_mosaic_path, 'visit*crf_20mas_i2d.fits')
+    visit_mosaic_path = os.path.join(
+        config['visit_mosaic_path'], config['bandpass'], 'visit*20mas*i2d.fits*'
     )
+    visit_mosaics = glob.glob(visit_mosaic_path)
 
     # Little sanity check #2: exit if no mosaics found!
     if len(visit_mosaics) == 0:

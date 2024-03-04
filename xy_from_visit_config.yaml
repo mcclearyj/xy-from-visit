@@ -5,8 +5,8 @@
 # This is the master catalog you are converting, local path & name
 input_catalog:
   # catalog_path: /path/to/your/cat
-  path: './'
-  # catalog name: master_cat.fits
+  path: '/n17data/shuntov/COSMOS-Web/Catalogs/'
+  # master/reference catalog name
   name: 'COSMOSWeb_master_v2.0.0-sersic-cgs.fits'
   # RA column name in catalog
   ra_colname: 'RA_MODEL'
@@ -16,12 +16,13 @@ input_catalog:
   hdu: 1
 
 # Path to resampled mosaics
-visit_mosaic_path: '/n23data2/mfranco/jwst/COSMOS-Web_jan_2024/products/pipeline_level3_better_stripping_jhat/f150w/'
+visit_mosaic_path: '/n23data2/cosmosweb/COSMOS-Web_Jan24/NIRCam/v0.6/20mas_individual/'
+#visit_mosaic_path:'/n23data1/mccleary/xy-from-visit'
 
 # Parameters for Max Franco-format visit name lists
 coord_files:
   # Path to visit name lists
-  path: './'
+  path: '/n23data1/mccleary/xy-from-visit'
   # Names of visit name lists; hopefully, names include bandpass!
   names: ['coords_f115w_CW_JAN2024.txt', 'coords_f150w_CW_JAN2024.txt', 'coords_f277w_CW_JAN2024.txt', 'coords_f444w_CW_JAN2024.txt']
 
@@ -31,7 +32,7 @@ bandpass: 'f150w'
 # Output catalog name
 output_catalog:
   # Desired output path
-  path: './'
+  path: '/n23data1/mccleary/xy-from-visit/output'
   # Desired output name
   name: 'test_xy.fits'
   # List of columns from original master cat to save
